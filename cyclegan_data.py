@@ -10,7 +10,7 @@ import random
 import glob
 import cv2
 
-class cycleGAN_dataset(data.Dataset):
+class cyclegan_data(data.Dataset):
     def __init__(self):
         self.image_dir = './datasets'
         self.data = None
@@ -42,13 +42,13 @@ class cycleGAN_dataset(data.Dataset):
         
         print("# Caching data")
         dataset = (
-            read_image_file()
+            self.read_image_file()
         )
         with open(data_file, 'wb') as f:
             torch.save(dataset, f)
 
 
-    def read_image_file():
+    def read_image_file(self):
         """Return a Tensor containing the patches
         """
         image_list = []
