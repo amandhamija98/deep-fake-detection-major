@@ -18,7 +18,7 @@ import torch.nn as nn
 
 from torchvision import transforms, models
 
-dataset_names = ['zebra']
+dataset_names = ['orange']
 BATCH_SIZE = 16
 TEST_BATCH_SIZE = 16
 LR = 0.01
@@ -33,7 +33,7 @@ log_dir = './logs'
 torch.manual_seed(SEED)
 np.random.seed(SEED)
 
-class gan_data(cyclegan_data.cycleGAN_dataset):
+class gan_data(cyclegan_data.cyclegan_data):
     
     def __init__(self,train = True):
         super(gan_data,self).__init__()

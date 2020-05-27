@@ -15,7 +15,7 @@ class cyclegan_data(data.Dataset):
         self.image_dir = './datasets'
         self.data = None
         self.labels = None
-        data_file = 'zebra_test2.pt'
+        data_file = 'orange_test.pt'
 
         self.cache_data(data_file)
         data, labels = torch.load(data_file)
@@ -58,7 +58,7 @@ class cyclegan_data(data.Dataset):
         # search_str = './datasets/real/zebra/testB/*.jpg'
 
         # real images
-        search_str = './datasets/real/zebra/testB/*.jpg'
+        search_str = './datasets/real/apple2orange/testB/*.jpg'
 
         for filename in glob.glob(search_str):
             image = cv2.imread(filename)
@@ -68,7 +68,7 @@ class cyclegan_data(data.Dataset):
             label_list.append(1)
         
         # fake images
-        search_str = './datasets/fake/zebra/testB/*.jpg'
+        search_str = './datasets/fake/apple2orange/testB/*.jpg'
 
         for filename in glob.glob(search_str):
             image = cv2.imread(filename)

@@ -16,13 +16,13 @@ from collections import OrderedDict
 import csv
 from torchvision import transforms, models
 
-dataset_names = ['zebra']
+dataset_names = ['orange']
 
 SEED = 5
 TEST_BATCH_SIZE = 16
 EPOCHS = 20
 START_EPOCH = 1
-result_dir = './zebra_test_results'
+result_dir = './orange_test_results'
 model_dir = './models2'
 
 torch.manual_seed(SEED)
