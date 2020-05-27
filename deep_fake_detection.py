@@ -33,7 +33,7 @@ log_dir = './logs'
 torch.manual_seed(SEED)
 np.random.seed(SEED)
 
-class gan_data(cyclegan_data.cyclegan_data):
+class gan_data(cyclegan_data.cycleGAN_dataset):
     
     def __init__(self,train = True):
         super(gan_data,self).__init__()

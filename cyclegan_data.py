@@ -15,7 +15,7 @@ class cyclegan_data(data.Dataset):
         self.image_dir = './datasets'
         self.data = None
         self.labels = None
-        data_file = 'zebra_train2.pt'
+        data_file = 'zebra_test2.pt'
 
         self.cache_data(data_file)
         data, labels = torch.load(data_file)
