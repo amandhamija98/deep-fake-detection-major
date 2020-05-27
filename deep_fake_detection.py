@@ -95,11 +95,6 @@ def train(train_loader, model, optimizer, criterion,  epoch, logger):
     for batch_idx, data in pbar:
         image_pair, label = data
 
-        # if args.cuda:
-        #     image_pair, label  = image_pair.cuda(), label.cuda()
-        #     image_pair, label = Variable(image_pair), Variable(label)
-        #     out= model(image_pair)
-
         out= model(image_pair)
         loss = criterion(out, label)
 
@@ -108,8 +103,6 @@ def train(train_loader, model, optimizer, criterion,  epoch, logger):
         optimizer.step()
 
     adjust_learning_rate(optimizer)
-
-    # if (args.enable_logging):
     logger.log_value('loss', loss.data.item()).step()
 
     try:
@@ -129,8 +122,6 @@ def test(test_loader, model, epoch, logger, logger_test_name):
     outputs = []
     pbar = tqdm(enumerate(test_loader))
     for batch_idx, (image_pair, label) in pbar:
-        # if args.cuda:
-        #     image_pair = image_pair.cuda()
         with torch.no_grad():
             image_pair, label = Variable(image_pair), Variable(label)
         out = model(image_pair)
@@ -152,7 +143,7 @@ def test(test_loader, model, epoch, logger, logger_test_name):
     acc = np.sum(labels == predicts)/float(num_tests)
     print('\33[91mTest set: Accuracy: {:.8f}\n\33[0m'.format(acc))
     
-    # if (args.enable_logging):
+    
     logger.log_value(logger_test_name+' Acc', acc)
     return
 
@@ -165,7 +156,6 @@ def adjust_learning_rate(optimizer):
             group['step'] = 0.
         else:
             group['step'] += 1.
-        #group['lr'] = args.lr*((1-args.lr_decay)**group['step'])
         group['lr'] = LR
         
     return
@@ -176,37 +166,12 @@ def create_optimizer(model, new_lr):
     optimizer = optim.SGD(model.parameters(), lr=new_lr,
                               momentum=0.9, dampening=0.9,
                               weight_decay=WD)
-    # if args.optimizer == 'sgd':
-        # optimizer = optim.SGD(model.parameters(), lr=new_lr,
-        #                       momentum=0.9, dampening=0.9,
-        #                       weight_decay=args.wd)
-    # elif args.optimizer == 'adam':
-    #     optimizer = optim.Adam(model.parameters(), lr=new_lr,
-    #                            weight_decay=args.wd)
-    # else:
-    #     raise Exception('Not supported optimizer: {0}'.format(args.optimizer))
     return optimizer
 
 
 def main(train_loader, test_loaders, model, logger):
-    #print('\nparsed options:\n{}\n'.format(vars(args)))
-
     optimizer1 = create_optimizer(model, LR)
     criterion = nn.CrossEntropyLoss()
-    # if args.cuda:
-    #     model.cuda()
-    #     criterion.cuda()
-
-    # optionally resume from a checkpoint
-    # if args.resume:
-    #     if os.path.isfile(args.resume):
-    #         print('=> loading checkpoint {}'.format(args.resume))
-    #         checkpoint = torch.load(args.resume)
-    #         args.start_epoch = checkpoint['epoch']
-    #         checkpoint = torch.load(args.resume)
-    #         model.load_state_dict(checkpoint['state_dict'])
-    #     else:
-    #         print('=> no checkpoint found at {}'.format(args.resume))
             
     start = START_EPOCH
     end = EPOCHS
@@ -223,26 +188,12 @@ if __name__ == '__main__':
     LOG_DIR = log_dir
     if not os.path.isdir(LOG_DIR):
         os.makedirs(LOG_DIR)
-    # LOG_DIR = log_dir + suffix
     logger, file_logger = None, None
-
-    # pretrain_flag = not args.feature=='comatrix'
 
     model = models.resnet34(pretrained=True)
     num_ftrs = model.fc.in_features
     model.fc = nn.Linear(num_ftrs, 2)
-    # if args.model == 'resnet':
-    #     model = models.resnet34(pretrained=True)
-    #     num_ftrs = model.fc.in_features
-    #     model.fc = nn.Linear(num_ftrs, 2)
-    # elif args.model == 'pggan':
-    #     model = pggan_dnet.SimpleDiscriminator(3, label_size=1, mbstat_avg='all',
-    #             resolution=256, fmap_max=128, fmap_base=2048, sigmoid_at_end=False)
-    # elif args.model == 'densenet':
-    #     model = models.densenet121(pretrained=True)
-    #     num_ftrs = model.classifier.in_features
-    #     model.classifier = nn.Linear(num_ftrs, 2)
-
+    
     if(ENABLE_LOGGING):
         from Loggers import Logger
         logger = Logger(LOG_DIR)

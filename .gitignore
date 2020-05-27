@@ -3,3 +3,5 @@ __pycache__
 logs
 models/
 models2/
+zebra_test2.pt
+zebra_train2.pt
